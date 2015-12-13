@@ -7,13 +7,17 @@ if (!isServer) exitWith {};
 
 _world = (toLower worldName);
 
-// Default to Chernarus
-_spawnCenter = [7652.9634, 7870.8076,0];
-_max = 7500;
-_wayPointOne = getMarkerPos "NEAF Aircraft Traders";
-_wayPointTwo = getMarkerPos "Stary Traders";
-_wayPointThree = [11591,3388,0]; // Near Otmel
-_wayPointFour = getMarkerPos "Bash Traders";
+	// Default to Chernarus
+	_spawnCenter = [7652.9634, 7870.8076,0];
+	_max = 7500;
+	_wayPointOne = getMarkerPos "NEAF Aircraft Traders";
+	_wayPointTwo = [11430,11384,0]; // Near Klen
+	_wayPointThree = [13463,6298,0]; // Solnichniy
+	_wayPointFour = [11591,3388,0]; // Near Otmel
+	_wayPointFive = [1930,2246,0]; // Kamenka
+	_wayPointSix = [4221,11697,0]; // Near Bash
+	_wayPointSeven = getMarkerPos "Stary Traders";
+	_wayPoints = [_wayPointOne,_wayPointTwo,_wayPointThree,_wayPointFour,_wayPointFive,_wayPointSix,_wayPointSeven,_wayPointOne];
 
 if (_world isEqualTo 'altis') then 
 {
@@ -23,6 +27,7 @@ if (_world isEqualTo 'altis') then
 	_wayPointTwo = getMarkerPos "TraderCityMarker";
 	_wayPointThree = getMarkerPos "NorthZarosTraders";
 	_wayPointFour = getMarkerPos "TraderZoneSilderas";
+	_wayPoints = [_wayPointOne,_wayPointTwo,_wayPointThree,_wayPointFour,_wayPointOne];
 };
  
 _min = 1500; // minimum distance from the center position (Number) in meters
@@ -47,7 +52,7 @@ trader addHeadgear "H_Cap_blk";
 trader setCaptive true;
 
 // Spawn Traders Vehicle
-_vehicleObject = createVehicle ["rhs_uaz_open_vdv", _possiblePosStart, [], 0, "CAN_COLLIDE"];
+_vehicleObject = createVehicle ["rhs_uaz_vdv", _possiblePosStart, [], 0, "CAN_COLLIDE"];
 clearBackpackCargoGlobal _vehicleObject;
 clearItemCargoGlobal _vehicleObject;
 clearMagazineCargoGlobal _vehicleObject;
@@ -55,7 +60,7 @@ clearWeaponCargoGlobal _vehicleObject;
 _vehicleObject setVariable ["ExileIsPersistent", false];
 _vehicleObject setFuel 1;
 
-diag_log format['[ExileTravellingTrader] Vehicle spawned @ %1',_possiblePosStart];
+diag_log format['[travellingtrader] Vehicle spawned @ %1',_possiblePosStart];
 
 _vehicleObject addEventHandler ["HandleDamage", {
 _amountOfDamage = 0;
@@ -65,43 +70,25 @@ _amountOfDamage
 trader assignasdriver _vehicleObject;
 [trader] orderGetin true;
  
-_wp1 = _group addWaypoint [_wayPointOne, 0];
-_wp1 setWaypointType "MOVE";
-_wp1 setWaypointBehaviour "SAFE";
-_wp1 setWaypointspeed "LIMITED";
+{
+	_wp = _group addWaypoint [_x, 0];
+	_wp setWaypointType "MOVE";
+	_wp setWaypointBehaviour "SAFE";
+	_wp setWaypointspeed "LIMITED"; 
+} forEach _wayPoints; 
  
-_wp2 = _group addWaypoint [_wayPointTwo, 0];
-_wp2 setWaypointType "MOVE";
-_wp2 setWaypointBehaviour "SAFE";
-_wp2 setWaypointspeed "LIMITED";
- 
-_wp3 = _group addWaypoint [_wayPointThree, 0];
-_wp3 setWaypointType "MOVE";
-_wp3 setWaypointBehaviour "SAFE";
-_wp3 setWaypointspeed "LIMITED";
- 
-_wp4 = _group addWaypoint [_wayPointFour, 0];
-_wp4 setWaypointType "MOVE";
-_wp4 setWaypointBehaviour "SAFE";
-_wp4 setWaypointspeed "LIMITED";
- 
-_wp5 = _group addWaypoint [_wayPointOne, 0];
-_wp5 setWaypointType "CYCLE";
-_wp5 setWaypointBehaviour "SAFE";
-_wp5 setWaypointspeed "LIMITED";
-
 _traderPos = position trader;
 _mk = createMarker ["TraderLocation",_traderPos];
 "TraderLocation" setMarkerType "mil_warning";
 "TraderLocation" setMarkerText "Travelling Trader";
 
-// Make trader will stand still when players near him.
+// Make trader stand still when players are near him.
 while {true} do
 	{
 		_pos = position _vehicleObject;
 		_mk setMarkerPos _pos;
 		_requiredMin = 2;
-		_nearPlayers = (count (_pos nearEntities [['Man'],25]));
+		_nearPlayers = (count (_pos nearEntities [['Man'],15]));
 		
 		if(trader in _vehicleObject) then
 		{			 
@@ -130,7 +117,7 @@ while {true} do
 			trader action ["LightOn", trader];	
 			trader enableAI "MOVE";
 		};
-		
+		_vehicleObject setFuel 1;
 		uiSleep 5;
 		if(!Alive trader)exitWith {};
 	};		
