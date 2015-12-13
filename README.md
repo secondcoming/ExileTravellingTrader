@@ -1,5 +1,7 @@
 # ExileTravellingTrader
-A travelling trader script for Exile mod
+A travelling trader script for Exile mod.
+
+To add items to the trader, edit Exile_Trader_CommunityCustoms in your mission config.cpp
 
 You will need to adjust the waypoints to match the marker names or fixed positions on your map in travellingTrader.sqf
 
