@@ -37,7 +37,7 @@ _shoremode = 0; // 0: does not have to be at a shore , 1: must be at a shore
 
 _possiblePosStart = [_wayPointOne,100,300,_mindist,_water,20,_shoremode] call BIS_fnc_findSafePos; //Use this if you want a completely random spawn location
 
-// Create the trader and ensure he doest react to gunfire or being shot at.
+// Create the trader and ensure he does not react to gunfire or being shot at.
 
 _group = createGroup resistance;
 _group setCombatMode "BLUE";
@@ -52,7 +52,7 @@ trader addHeadgear "H_Cap_blk";
 trader setCaptive true;
 
 // Spawn Traders Vehicle
-_vehicleObject = createVehicle ["rhs_uaz_vdv", _possiblePosStart, [], 0, "CAN_COLLIDE"];
+_vehicleObject = createVehicle ["Exile_Car_Volha_Black", _possiblePosStart, [], 0, "CAN_COLLIDE"];
 clearBackpackCargoGlobal _vehicleObject;
 clearItemCargoGlobal _vehicleObject;
 clearMagazineCargoGlobal _vehicleObject;
