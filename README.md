@@ -15,3 +15,6 @@ You will need to adjust the waypoints to match the marker names or fixed positio
 	_wayPointSeven = getMarkerPos "Stary Traders";
 	_wayPoints = [_wayPointOne,_wayPointTwo,_wayPointThree,_wayPointFour,_wayPointFive,_wayPointSix,_wayPointSeven,_wayPointOne];
 
+If required, add this to the createUnit line in scripts.txt
+
+ !"createUnit [_possiblePosStart, _group, ""trader = this; this disableAI"
