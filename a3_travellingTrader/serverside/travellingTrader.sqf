@@ -1,5 +1,9 @@
-/** ROAMING TRADER by JohnO **/
+// ROAMING TRADER by JohnO
+// http://www.exilemod.com/profile/38-john/
+// http://www.exilemod.com/topic/7664-roaming-trader-script
+
 // Trader vehicle handling added by second_coming 
+// http://www.exilemod.com/profile/60-second_coming/
 
 diag_log format['[travellingtrader] Started'];
 
