@@ -14,24 +14,27 @@ _world = (toLower worldName);
 	// Default to Chernarus
 	_spawnCenter = [7652.9634, 7870.8076,0];
 	_max = 7500;
-	_wayPointOne = getMarkerPos "NEAF Aircraft Traders";
-	_wayPointTwo = [11430,11384,0]; // Near Klen
-	_wayPointThree = [13463,6298,0]; // Solnichniy
-	_wayPointFour = [11591,3388,0]; // Near Otmel
-	_wayPointFive = [1930,2246,0]; // Kamenka
-	_wayPointSix = [4221,11697,0]; // Near Bash
-	_wayPointSeven = getMarkerPos "Stary Traders";
-	_wayPoints = [_wayPointOne,_wayPointTwo,_wayPointThree,_wayPointFour,_wayPointFive,_wayPointSix,_wayPointSeven,_wayPointOne];
+	_wayPointOne = [getMarkerPos "NEAF Aircraft Traders","MOVE"];
+	_wayPointTwo =[[11430,11384,0],"MOVE"]; // Near Klen
+	_wayPointThree = [[13463,6298,0],"MOVE"]; // Solnichniy
+	_wayPointFour = [[11591,3388,0],"MOVE"]; // Near Otmel
+	_wayPointFive = [[1930,2246,0],"MOVE"]; // Kamenka
+	_wayPointSix = [[4221,11697,0],"MOVE"]; // Near Bash
+	_wayPointSeven = [getMarkerPos "Stary Traders","MOVE"];
+	_wayPointEight = [getMarkerPos "NEAF Aircraft Traders","CYCLE"];
+	_wayPoints = [_wayPointOne,_wayPointTwo,_wayPointThree,_wayPointFour,_wayPointFive,_wayPointSix,_wayPointSeven,_wayPointEight];
+
 
 if (_world isEqualTo 'altis') then 
 {
 	_spawnCenter = [15834.2,15787.8,0];
 	_max = 9000;
-	_wayPointOne = getMarkerPos "AlmyraTraders";
-	_wayPointTwo = getMarkerPos "TraderCityMarker";
-	_wayPointThree = getMarkerPos "NorthZarosTraders";
-	_wayPointFour = getMarkerPos "TraderZoneSilderas";
-	_wayPoints = [_wayPointOne,_wayPointTwo,_wayPointThree,_wayPointFour,_wayPointOne];
+	_wayPointOne = [getMarkerPos "AlmyraTraders","MOVE"];
+	_wayPointTwo = [getMarkerPos "TraderCityMarker","MOVE"];
+	_wayPointThree = [getMarkerPos "NorthZarosTraders","MOVE"];
+	_wayPointFour = [getMarkerPos "TraderZoneSilderas","MOVE"];
+	_wayPointFive = [getMarkerPos "AlmyraTraders","CYCLE"];
+	_wayPoints = [_wayPointOne,_wayPointTwo,_wayPointThree,_wayPointFour,_wayPointFive];
 };
  
 _min = 1500; // minimum distance from the center position (Number) in meters
@@ -39,9 +42,9 @@ _mindist = 20; // minimum distance from the nearest object (Number) in meters, i
 _water = 0; // water mode 0: cannot be in water , 1: can either be in water or not , 2: must be in water
 _shoremode = 0; // 0: does not have to be at a shore , 1: must be at a shore
 
-_possiblePosStart = [_wayPointOne,100,300,_mindist,_water,20,_shoremode] call BIS_fnc_findSafePos; //Use this if you want a completely random spawn location
+_possiblePosStart = [_wayPointOne select 0,100,300,_mindist,_water,20,_shoremode] call BIS_fnc_findSafePos; //Use this if you want a completely random spawn location
 
-// Create the trader and ensure he does not react to gunfire or being shot at.
+// Create the trader and ensure he doest react to gunfire or being shot at.
 
 _group = createGroup resistance;
 _group setCombatMode "BLUE";
@@ -75,10 +78,13 @@ trader assignasdriver _vehicleObject;
 [trader] orderGetin true;
  
 {
-	_wp = _group addWaypoint [_x, 0];
-	_wp setWaypointType "MOVE";
+	_wpName = _x select 0;
+	_wpType = _x select 1;
+	_wp = _group addWaypoint [_x select 0, 0];
+	_wp setWaypointType _wpType;
 	_wp setWaypointBehaviour "SAFE";
 	_wp setWaypointspeed "LIMITED"; 
+	diag_log format['[travellingtrader] Waypoint %1 Type: %2',_wpName,_wpType];
 } forEach _wayPoints; 
  
 _traderPos = position trader;
@@ -86,7 +92,7 @@ _mk = createMarker ["TraderLocation",_traderPos];
 "TraderLocation" setMarkerType "mil_warning";
 "TraderLocation" setMarkerText "Travelling Trader";
 
-// Make trader stand still when players are near him.
+// Make trader will stand still when players near him.
 while {true} do
 	{
 		_pos = position _vehicleObject;
