@@ -50,6 +50,7 @@ _group = createGroup resistance;
 _group setCombatMode "BLUE";
 
 "Exile_Trader_CommunityCustoms" createUnit [_possiblePosStart, _group, "trader = this; this disableAI 'AUTOTARGET'; this disableAI 'TARGET'; this disableAI 'SUPPRESSION'; "];
+trader setVariable ["ExileTraderType", "Exile_Trader_CommunityCustoms",true];
 trader allowDamage false; 
 removeGoggles trader;
 trader forceAddUniform "U_IG_Guerilla3_1";
