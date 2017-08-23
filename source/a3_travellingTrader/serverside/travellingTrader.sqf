@@ -27,6 +27,12 @@ if (worldName == 'altis') then
 	_maxDistance = 9000;
 };
 
+if (worldName == 'Tanoa') then 
+{ 
+	_spawnCenter = [7680,7680,0];
+	_maxDistance = 6000;
+};
+
 if (worldName == 'Malden') then 
 { 
 	_spawnCenter = [6400,6400,0];
