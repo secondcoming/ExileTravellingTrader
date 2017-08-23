@@ -5,6 +5,8 @@
 // Trader vehicle handling added by second_coming 
 // http://www.exilemod.com/profile/60-second_coming/
 
+// Modified, fixed and added to by [GADD]Monkeynutz
+
 diag_log format['[travellingtrader] Started'];
 
 if (!isServer) exitWith {};
@@ -23,6 +25,12 @@ if (worldName == 'altis') then
 { 
 	_spawnCenter = [15834.2,15787.8,0];
 	_maxDistance = 9000;
+};
+
+if (worldName == 'Malden') then 
+{ 
+	_spawnCenter = [6400,6400,0];
+	_maxDistance = 5000;
 };
 
 _mindist 			= 20; 	// minimum distance from the nearest object (Number) in meters, ie. create waypoint this distance away from anything within x meters..
@@ -49,6 +57,8 @@ _wayPoints pushBack _wp;
 
 _group = createGroup resistance;
 _group setCombatMode "BLUE";
+
+_possiblePosStart = _startPosition;
 
 "Exile_Trader_CommunityCustoms" createUnit [_possiblePosStart, _group, "trader = this; this disableAI 'AUTOTARGET'; this disableAI 'TARGET'; this disableAI 'SUPPRESSION'; "];
 trader setVariable ["ExileTraderType", "Exile_Trader_CommunityCustoms",true];
