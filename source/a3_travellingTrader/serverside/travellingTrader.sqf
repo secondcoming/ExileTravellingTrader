@@ -5,7 +5,7 @@
 // Trader vehicle handling added by second_coming 
 // http://www.exilemod.com/profile/60-second_coming/
 
-// Modified, fixed and added to by [GADD]Monkeynutz
+// Modified, fixed and added to by [GADD]Monkeynutz :-)
 
 diag_log format['[travellingtrader] Started'];
 
@@ -33,9 +33,16 @@ if (worldName == 'Malden') then
 	_maxDistance = 5000;
 };
 
-_mindist 			= 20; 	// minimum distance from the nearest object (Number) in meters, ie. create waypoint this distance away from anything within x meters..
-_water 				= 0; 	// water mode 0: cannot be in water , 1: can either be in water or not , 2: must be in water
-_shoremode 			= 0; 	// 0: does not have to be at a shore , 1: must be at a shore
+_mindist 			= 20; 									// minimum distance from the nearest object (Number) in meters, ie. create waypoint this distance away from anything within x meters..
+_water 				= 0; 									// water mode 0: cannot be in water , 1: can either be in water or not , 2: must be in water
+_shoremode 			= 0; 									// 0: does not have to be at a shore , 1: must be at a shore
+_tradertype			= "Exile_Trader_CommunityCustoms";		// Set what kind of trader you want to be roaming the lands.
+_vehicletype		= "Exile_Car_Volha_Black";				// Set what vehicle you want him to be in.
+_traderuniform 		= "U_IG_Guerilla3_1";					// Set the uniform for the trader
+_tradervest 		= "V_TacVest_blk_POLICE";				// Set the vest that the trader will wear
+_traderbackpack 	= "B_FieldPack_oli";					// Set the backpack the trader will wear
+_traderheadgear		= "H_Cap_blk";							// Set the Headgear/Hat that the trader will wear
+_traderdistance		= 25;									// Set the distance in meters that players have to be to make the trader stop and talk to them
 
 _startPosition 	= [_spawnCenter,100,1500,_mindist,_water,20,_shoremode] call BIS_fnc_findSafePos;
 _wayPoints		= [];
@@ -60,18 +67,18 @@ _group setCombatMode "BLUE";
 
 _possiblePosStart = _startPosition;
 
-"Exile_Trader_CommunityCustoms" createUnit [_possiblePosStart, _group, "trader = this; this disableAI 'AUTOTARGET'; this disableAI 'TARGET'; this disableAI 'SUPPRESSION'; "];
-trader setVariable ["ExileTraderType", "Exile_Trader_CommunityCustoms",true];
+_tradertype createUnit [_possiblePosStart, _group, "trader = this; this disableAI 'AUTOTARGET'; this disableAI 'TARGET'; this disableAI 'SUPPRESSION'; "];
+trader setVariable ["ExileTraderType", _tradertype,true];
 trader allowDamage false; 
 removeGoggles trader;
-trader forceAddUniform "U_IG_Guerilla3_1";
-trader addVest "V_TacVest_blk_POLICE";
-trader addBackpack "B_FieldPack_oli";
-trader addHeadgear "H_Cap_blk";
+trader forceAddUniform _traderuniform;
+trader addVest _tradervest;
+trader addBackpack _traderbackpack;
+trader addHeadgear _traderheadgear;
 trader setCaptive true;
 
 // Spawn Traders Vehicle
-_vehicleObject = createVehicle ["Exile_Car_Volha_Black", _possiblePosStart, [], 0, "CAN_COLLIDE"];
+_vehicleObject = createVehicle [_vehicletype, _possiblePosStart, [], 0, "CAN_COLLIDE"];
 clearBackpackCargoGlobal _vehicleObject;
 clearItemCargoGlobal _vehicleObject;
 clearMagazineCargoGlobal _vehicleObject;
@@ -110,7 +117,7 @@ while {true} do
 		_pos = position _vehicleObject;
 		_mk setMarkerPos _pos;
 		_requiredMin = 2;
-		_nearPlayers = (count (_pos nearEntities [['Man'],15]));
+		_nearPlayers = (count (_pos nearEntities [['Man'],_traderdistance]));
 		
 		if(trader in _vehicleObject) then
 		{			 
@@ -143,4 +150,3 @@ while {true} do
 		uiSleep 5;
 		if(!Alive trader)exitWith {};
 	};		
-	
