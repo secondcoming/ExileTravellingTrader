@@ -5,7 +5,7 @@
 // Trader vehicle handling added by second_coming 
 // http://www.exilemod.com/profile/60-second_coming/
 
-// Modified, fixed and added to by [GADD]Monkeynutz :-)
+// Modified, fixed and added to by [GADD]Monkeynutz
 
 diag_log format['[travellingtrader] Started'];
 
@@ -48,7 +48,10 @@ _traderuniform 		= "U_IG_Guerilla3_1";					// Set the uniform for the trader
 _tradervest 		= "V_TacVest_blk_POLICE";				// Set the vest that the trader will wear
 _traderbackpack 	= "B_FieldPack_oli";					// Set the backpack the trader will wear
 _traderheadgear		= "H_Cap_blk";							// Set the Headgear/Hat that the trader will wear
-_traderdistance		= 25;									// Set the distance in meters that players have to be to make the trader stop and talk to them
+_traderdistance		= 20;									// Set the distance in meters that players have to be to make the trader stop and talk to them
+_tradermarkertype	= "ExileTraderZoneIcon";				// Set the Marker type.
+_mapmarkername		= "Travelling Trader";					// Set the text for the marker to be displayed on the map.
+_markercolor		= "ColorGreen";							// Set the color of the marker here.
 
 _startPosition 	= [_spawnCenter,100,1500,_mindist,_water,20,_shoremode] call BIS_fnc_findSafePos;
 _wayPoints		= [];
@@ -114,8 +117,9 @@ trader assignasdriver _vehicleObject;
  
 _traderPos = position trader;
 _mk = createMarker ["TraderLocation",_traderPos];
-"TraderLocation" setMarkerType "mil_warning";
-"TraderLocation" setMarkerText "Travelling Trader";
+"TraderLocation" setMarkerType _tradermarkertype;
+"TraderLocation" setMarkerText _mapmarkername;
+"TraderLocation" setMarkerColor _markercolor;
 
 // Make trader will stand still when players near him.
 while {true} do
@@ -155,4 +159,4 @@ while {true} do
 		_vehicleObject setFuel 1;
 		uiSleep 5;
 		if(!Alive trader)exitWith {};
-	};		
+	};	
