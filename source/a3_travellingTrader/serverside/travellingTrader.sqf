@@ -127,7 +127,7 @@ while {true} do
 		_pos = position _vehicleObject;
 		_mk setMarkerPos _pos;
 		_requiredMin = 2;
-		_nearPlayers = (count (_pos nearEntities [['Man'],_traderdistance]));
+		_nearPlayers = (count (_pos nearEntities [["Exile_Unit_Player"],_traderdistance]));
 		
 		if(trader in _vehicleObject) then
 		{			 
