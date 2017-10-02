@@ -5,6 +5,8 @@
 // Trader vehicle handling added by second_coming 
 // http://www.exilemod.com/profile/60-second_coming/
 
+// Modified, fixed and added to by [GADD]Monkeynutz
+
 diag_log format['[travellingtrader] Started'];
 
 if (!isServer) exitWith {};
@@ -25,9 +27,31 @@ if (worldName == 'altis') then
 	_maxDistance = 9000;
 };
 
-_mindist 			= 20; 	// minimum distance from the nearest object (Number) in meters, ie. create waypoint this distance away from anything within x meters..
-_water 				= 0; 	// water mode 0: cannot be in water , 1: can either be in water or not , 2: must be in water
-_shoremode 			= 0; 	// 0: does not have to be at a shore , 1: must be at a shore
+if (worldName == 'Tanoa') then 
+{ 
+	_spawnCenter = [7680,7680,0];
+	_maxDistance = 6000;
+};
+
+if (worldName == 'Malden') then 
+{ 
+	_spawnCenter = [6400,6400,0];
+	_maxDistance = 5000;
+};
+
+_mindist 			= 20; 									// minimum distance from the nearest object (Number) in meters, ie. create waypoint this distance away from anything within x meters..
+_water 				= 0; 									// water mode 0: cannot be in water , 1: can either be in water or not , 2: must be in water
+_shoremode 			= 0; 									// 0: does not have to be at a shore , 1: must be at a shore
+_tradertype			= "Exile_Trader_CommunityCustoms";		// Set what kind of trader you want to be roaming the lands.
+_vehicletype		= "Exile_Car_Volha_Black";				// Set what vehicle you want him to be in.
+_traderuniform 		= "U_IG_Guerilla3_1";					// Set the uniform for the trader
+_tradervest 		= "V_TacVest_blk_POLICE";				// Set the vest that the trader will wear
+_traderbackpack 	= "B_FieldPack_oli";					// Set the backpack the trader will wear
+_traderheadgear		= "H_Cap_blk";							// Set the Headgear/Hat that the trader will wear
+_traderdistance		= 20;									// Set the distance in meters that players have to be to make the trader stop and talk to them
+_tradermarkertype	= "ExileTraderZoneIcon";				// Set the Marker type.
+_mapmarkername		= "Travelling Trader";					// Set the text for the marker to be displayed on the map.
+_markercolor		= "ColorGreen";							// Set the color of the marker here.
 
 _startPosition 	= [_spawnCenter,100,1500,_mindist,_water,20,_shoremode] call BIS_fnc_findSafePos;
 _wayPoints		= [];
@@ -50,18 +74,20 @@ _wayPoints pushBack _wp;
 _group = createGroup resistance;
 _group setCombatMode "BLUE";
 
-"Exile_Trader_CommunityCustoms" createUnit [_possiblePosStart, _group, "trader = this; this disableAI 'AUTOTARGET'; this disableAI 'TARGET'; this disableAI 'SUPPRESSION'; "];
-trader setVariable ["ExileTraderType", "Exile_Trader_CommunityCustoms",true];
+_possiblePosStart = _startPosition;
+
+_tradertype createUnit [_possiblePosStart, _group, "trader = this; this disableAI 'AUTOTARGET'; this disableAI 'TARGET'; this disableAI 'SUPPRESSION'; "];
+trader setVariable ["ExileTraderType", _tradertype,true];
 trader allowDamage false; 
 removeGoggles trader;
-trader forceAddUniform "U_IG_Guerilla3_1";
-trader addVest "V_TacVest_blk_POLICE";
-trader addBackpack "B_FieldPack_oli";
-trader addHeadgear "H_Cap_blk";
+trader forceAddUniform _traderuniform;
+trader addVest _tradervest;
+trader addBackpack _traderbackpack;
+trader addHeadgear _traderheadgear;
 trader setCaptive true;
 
 // Spawn Traders Vehicle
-_vehicleObject = createVehicle ["Exile_Car_Volha_Black", _possiblePosStart, [], 0, "CAN_COLLIDE"];
+_vehicleObject = createVehicle [_vehicletype, _possiblePosStart, [], 0, "CAN_COLLIDE"];
 clearBackpackCargoGlobal _vehicleObject;
 clearItemCargoGlobal _vehicleObject;
 clearMagazineCargoGlobal _vehicleObject;
@@ -91,8 +117,9 @@ trader assignasdriver _vehicleObject;
  
 _traderPos = position trader;
 _mk = createMarker ["TraderLocation",_traderPos];
-"TraderLocation" setMarkerType "mil_warning";
-"TraderLocation" setMarkerText "Travelling Trader";
+"TraderLocation" setMarkerType _tradermarkertype;
+"TraderLocation" setMarkerText _mapmarkername;
+"TraderLocation" setMarkerColor _markercolor;
 
 // Make trader will stand still when players near him.
 while {true} do
@@ -100,7 +127,7 @@ while {true} do
 		_pos = position _vehicleObject;
 		_mk setMarkerPos _pos;
 		_requiredMin = 2;
-		_nearPlayers = (count (_pos nearEntities [['Man'],15]));
+		_nearPlayers = (count (_pos nearEntities [["Exile_Unit_Player"],_traderdistance]));
 		
 		if(trader in _vehicleObject) then
 		{			 
@@ -132,5 +159,4 @@ while {true} do
 		_vehicleObject setFuel 1;
 		uiSleep 5;
 		if(!Alive trader)exitWith {};
-	};		
-	
+	};	
