@@ -11,33 +11,13 @@ diag_log format['[travellingtrader] Started'];
 
 if (!isServer) exitWith {};
 
-_middle = worldSize/2;
-_spawnCenter = [_middle,_middle,0];
-_maxDistance = _middle;
+_middle = worldSize/2;				//DO NOT EDIT
+_spawnCenter = [_middle,_middle,0];		//DO NOT EDIT
+_maxDistance = _middle;				//DO NOT EDIT
 
-if (worldName == 'Chernarus') then 
-{ 
-	_spawnCenter = [7652.9634, 7870.8076,0];
-	_maxDistance = 7500;
-};
-
-if (worldName == 'altis') then 
-{ 
-	_spawnCenter = [15834.2,15787.8,0];
-	_maxDistance = 9000;
-};
-
-if (worldName == 'Tanoa') then 
-{ 
-	_spawnCenter = [7680,7680,0];
-	_maxDistance = 6000;
-};
-
-if (worldName == 'Malden') then 
-{ 
-	_spawnCenter = [6400,6400,0];
-	_maxDistance = 5000;
-};
+/*
+	Feel free to edit all these variables to set up your trader how you want him to be.
+*/
 
 _mindist 			= 20; 									// minimum distance from the nearest object (Number) in meters, ie. create waypoint this distance away from anything within x meters..
 _water 				= 0; 									// water mode 0: cannot be in water , 1: can either be in water or not , 2: must be in water
@@ -52,6 +32,10 @@ _traderdistance		= 20;									// Set the distance in meters that players have t
 _tradermarkertype	= "ExileTraderZoneIcon";				// Set the Marker type.
 _mapmarkername		= "Travelling Trader";					// Set the text for the marker to be displayed on the map.
 _markercolor		= "ColorGreen";							// Set the color of the marker here.
+
+/*
+	DO NOT EDIT BELOW THIS LINE
+*/
 
 _startPosition 	= [_spawnCenter,100,1500,_mindist,_water,20,_shoremode] call BIS_fnc_findSafePos;
 _wayPoints		= [];
