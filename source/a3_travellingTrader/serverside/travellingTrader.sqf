@@ -11,31 +11,31 @@ diag_log format['[travellingtrader] Started'];
 
 if (!isServer) exitWith {};
 
-_middle = worldSize/2;				//DO NOT EDIT
-_spawnCenter = [_middle,_middle,0];		//DO NOT EDIT
-_maxDistance = _middle;				//DO NOT EDIT
-
 /*
 	Feel free to edit all these variables to set up your trader how you want him to be.
 */
 
-_mindist 			= 20; 									// minimum distance from the nearest object (Number) in meters, ie. create waypoint this distance away from anything within x meters..
-_water 				= 0; 									// water mode 0: cannot be in water , 1: can either be in water or not , 2: must be in water
-_shoremode 			= 0; 									// 0: does not have to be at a shore , 1: must be at a shore
+_mindist 			= 20; 						// minimum distance from the nearest object (Number) in meters, ie. create waypoint this distance away from anything within x meters..
+_water 				= 0; 						// water mode 0: cannot be in water , 1: can either be in water or not , 2: must be in water
+_shoremode 			= 0; 						// 0: does not have to be at a shore , 1: must be at a shore
 _tradertype			= "Exile_Trader_CommunityCustoms";		// Set what kind of trader you want to be roaming the lands.
-_vehicletype		= "Exile_Car_Volha_Black";				// Set what vehicle you want him to be in.
-_traderuniform 		= "U_IG_Guerilla3_1";					// Set the uniform for the trader
-_tradervest 		= "V_TacVest_blk_POLICE";				// Set the vest that the trader will wear
-_traderbackpack 	= "B_FieldPack_oli";					// Set the backpack the trader will wear
-_traderheadgear		= "H_Cap_blk";							// Set the Headgear/Hat that the trader will wear
-_traderdistance		= 20;									// Set the distance in meters that players have to be to make the trader stop and talk to them
-_tradermarkertype	= "ExileTraderZoneIcon";				// Set the Marker type.
-_mapmarkername		= "Travelling Trader";					// Set the text for the marker to be displayed on the map.
-_markercolor		= "ColorGreen";							// Set the color of the marker here.
+_vehicletype			= "Exile_Car_Volha_Black";			// Set what vehicle you want him to be in.
+_traderuniform 			= "U_IG_Guerilla3_1";				// Set the uniform for the trader
+_tradervest 			= "V_TacVest_blk_POLICE";			// Set the vest that the trader will wear
+_traderbackpack 		= "B_FieldPack_oli";				// Set the backpack the trader will wear
+_traderheadgear			= "H_Cap_blk";					// Set the Headgear/Hat that the trader will wear
+_traderdistance			= 20;						// Set the distance in meters that players have to be to make the trader stop and talk to them
+_tradermarkertype		= "ExileTraderZoneIcon";			// Set the Marker type.
+_mapmarkername			= "Travelling Trader";				// Set the text for the marker to be displayed on the map.
+_markercolor			= "ColorGreen";					// Set the color of the marker here.
 
 /*
 	DO NOT EDIT BELOW THIS LINE
 */
+
+_middle = worldSize/2;				//DO NOT EDIT
+_spawnCenter = [_middle,_middle,0];		//DO NOT EDIT
+_maxDistance = _middle;				//DO NOT EDIT
 
 _startPosition 	= [_spawnCenter,100,1500,_mindist,_water,20,_shoremode] call BIS_fnc_findSafePos;
 _wayPoints		= [];
