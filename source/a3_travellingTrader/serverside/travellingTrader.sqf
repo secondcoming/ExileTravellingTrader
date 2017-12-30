@@ -121,7 +121,7 @@ while {true} do
 		if (_nearPlayers >= _requiredMin) then
 		{
 			[trader] orderGetin false;
-			uiSleep 0.5;
+			uiSleep 2.5;
 			_vehicleObject setVehicleLock "LOCKED";
 			_vehicleObject setFuel 0;
 			trader action ["LightOff", trader];	
@@ -135,7 +135,7 @@ while {true} do
 			[trader] orderGetin true;
 			_vehicleObject setFuel 1;
 			_vehicleObject setVehicleLock "UNLOCKED";
-			uiSleep 0.5;
+			uiSleep 2.5;
 			trader moveInDriver _vehicleObject;
 			trader action ["LightOn", trader];	
 			trader enableAI "MOVE";
