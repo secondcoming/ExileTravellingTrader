@@ -117,6 +117,11 @@ while {true} do
 		{			 
 			_requiredMin = 1;
 		};
+
+		if((trader distance _vehicleObject) > 20) then //if player steals vehicle then vehicle despawns
+		{
+			deleteVehicle _vehicleObject;
+		};
 		
 		if (_nearPlayers >= _requiredMin) then
 		{
